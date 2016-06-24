@@ -4,7 +4,7 @@
 #include <getopt.h>
 
 using namespace std;
-using namespace vcf;
+using namespace vcflib;
 
 bool isTransition(const string& ref, const string& alt) {
     if (((ref == "A" && alt == "G") || (ref == "G" && alt == "A")) ||
@@ -257,13 +257,15 @@ int main(int argc, char** argv) {
             } else {
                 ++biallelics;
             }
-            map<string, vector<VariantAllele> > alternates = var.parsedAlternates(includePreviousBaseForIndels,
-                                                                                  useMNPs,
-                                                                                  useEntropy,
-                                                                                  matchScore,
-                                                                                  mismatchScore,
-                                                                                  gapOpenPenalty,
-                                                                                  gapExtendPenalty);
+            map<string, vector<VariantAllele> > alternates 
+	      = var.parsedAlternates(includePreviousBaseForIndels,
+				     useMNPs,
+				     useEntropy,
+				     matchScore,
+				     mismatchScore,
+				     gapOpenPenalty,
+				     gapExtendPenalty);
+
             map<VariantAllele, vector<string> > uniqueVariants;
 	    
             vector<string> cigars;

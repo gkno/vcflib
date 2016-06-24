@@ -2,14 +2,14 @@
 #include "convert.h"
 #include "join.h"
 #include "split.h"
-#include "fastahack/Fasta.h"
+#include "Fasta.h"
 #include <set>
 #include <vector>
 #include <getopt.h>
 #include <cmath>
 
 using namespace std;
-using namespace vcf;
+using namespace vcflib;
 
 
 // Attempts to left-realign all the indels represented by the alignment cigar.
@@ -610,8 +610,10 @@ int main(int argc, char** argv) {
             Cigar cigarBefore = a->cigar;
             //cerr << a->seq << endl;
             //cerr << "before : " << a->pos << " " << joinCigar(a->cigar) << endl;
+            long int prev = a->pos;
             stablyLeftAlign(a->seq, ref, a->cigar, 20, false);
             //cerr << "after  : " << a->pos << " " << joinCigar(a->cigar) << endl;
+            if (a->pos != prev) cerr << "modified alignment @ " << var << endl;
         }
         //cout << var << endl;
 

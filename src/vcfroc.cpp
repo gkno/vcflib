@@ -1,14 +1,14 @@
 #include "Variant.h"
 #include "BedReader.h"
-#include "intervaltree/IntervalTree.h"
+#include "IntervalTree.h"
 #include <getopt.h>
-#include "fastahack/Fasta.h"
+#include "Fasta.h"
 #include <algorithm>
 #include <list>
 #include <set>
 
 using namespace std;
-using namespace vcf;
+using namespace vcflib;
 
 
 void printSummary(char** argv) {
@@ -244,7 +244,7 @@ int main(int argc, char** argv) {
     //vcfintersect -r $reference -v -i $answers_primitives $results.$Q.vcf | vcfstats >false_positives.$Q.stats
 
     for (list<Variant>::iterator v = testVariants.begin(); v != testVariants.end(); ++v) {
-        // TODO allow different cutoffs
+        // TODO allow different cutoff sources
         callsByCutoff[v->quality].push_back(&*v);
     }
 

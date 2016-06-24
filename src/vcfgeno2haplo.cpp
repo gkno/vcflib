@@ -1,18 +1,21 @@
 #include "Variant.h"
 #include <getopt.h>
-#include "fastahack/Fasta.h"
+#include "Fasta.h"
+#include "gpatInfo.hpp"
 #include <algorithm>
 #include <list>
 #include <set>
 
 using namespace std;
-using namespace vcf;
+using namespace vcflib;
 
 
 void printSummary(char** argv) {
     cerr << "usage: " << argv[0] << " [options] [<vcf file>]" << endl
          << endl
          << "options:" << endl 
+         << "    -h, --help              Print this message" << endl
+         << "    -v, --version           Print version" << endl
          << "    -r, --reference FILE    FASTA reference file, required with -i and -u" << endl
          << "    -w, --window-size N     Merge variants at most this many bp apart (default 30)" << endl
          << "    -o, --only-variants     Don't output the entire haplotype, just concatenate" << endl
@@ -57,41 +60,51 @@ int main(int argc, char** argv) {
                 {"help", no_argument, 0, 'h'},
                 {"window-size", required_argument, 0, 'w'},
                 {"reference", required_argument, 0, 'r'},
+                {"version", no_argument, 0, 'v'},
                 {"only-variants", no_argument, 0, 'o'},
                 {0, 0, 0, 0}
             };
         /* getopt_long stores the option index here. */
         int option_index = 0;
 
-        c = getopt_long (argc, argv, "how:r:",
+        c = getopt_long (argc, argv, "hvow:r:",
                          long_options, &option_index);
-
-        if (c == -1)
+	
+        if (c == -1){
             break;
-
+        }
         switch (c) {
-
+        case 'v':
+        {
+            printBasicVersion();
+            exit(0);
+        }  
         case 'o':
+        {
             onlyVariants = true;
             break;
-
-	    case 'w':
+        }
+        case 'w':
+        {
             windowsize = atoi(optarg);
             break;
-
-	    case 'r':
+        }
+        case 'r':
+        {
             fastaFileName = string(optarg);
             break;
-
+        }
         case 'h':
+        {
             printSummary(argv);
             break;
-
+        }
         case '?':
+        {
             printSummary(argv);
             exit(1);
             break;
-
+        }
         default:
             abort ();
         }
@@ -166,6 +179,7 @@ int main(int argc, char** argv) {
                 cout << var << endl;
             } else if (cluster.size() == 1) {
                 cout << cluster.front() << endl;
+                cluster.clear();
                 cout << var << endl;
             } else {
                 haplotypeCluster = true;
@@ -175,7 +189,8 @@ int main(int argc, char** argv) {
         // we need to deal with the current cluster, as our next var is outside of bounds
         // process the last cluster if it's more than 1 var
         if (haplotypeCluster) {
-            /*            cerr << "cluster: ";
+            /*
+            cerr << "cluster: ";
             for (vector<Variant>::iterator v = cluster.begin(); v != cluster.end(); ++v) {
                 cerr << " " << v->position;
             }

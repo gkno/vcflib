@@ -1,14 +1,14 @@
 #include "Variant.h"
 #include "BedReader.h"
-#include "intervaltree/IntervalTree.h"
+#include "IntervalTree.h"
 #include <getopt.h>
-#include "fastahack/Fasta.h"
+#include "Fasta.h"
 #include <algorithm>
 #include <list>
 #include <set>
 
 using namespace std;
-using namespace vcf;
+using namespace vcflib;
 
 
 void printSummary(char** argv) {

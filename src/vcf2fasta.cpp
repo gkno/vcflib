@@ -4,12 +4,12 @@
 #include "split.h"
 #include <set>
 #include <getopt.h>
-#include "fastahack/Fasta.h"
+#include "Fasta.h"
 #include <iostream>
 #include <fstream>
 
 using namespace std;
-using namespace vcf;
+using namespace vcflib;
 
 #define ALLELE_NULL -1
 

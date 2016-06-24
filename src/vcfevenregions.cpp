@@ -1,11 +1,11 @@
 #include "Variant.h"
 #include "split.h"
-#include "fastahack/Fasta.h"
+#include "Fasta.h"
 #include <getopt.h>
 #include <cmath>
 
 using namespace std;
-using namespace vcf;
+using namespace vcflib;
 
 void printSummary(char** argv) {
     cerr << "usage: " << argv[0] << " [options] <vcf file>" << endl
